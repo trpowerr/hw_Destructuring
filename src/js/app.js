@@ -1,26 +1,38 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable guard-for-in */
-/* eslint-disable no-param-reassign */
-export const person = {
-  name: 'мечник', health: 10, level: 2, attack: 80, defence: 40,
+export const character = {
+  name: 'Лучник',
+  type: 'Bowman',
+  health: 50,
+  level: 3,
+  attack: 40,
+  defence: 10,
+  special: [
+    {
+      id: 8,
+      name: 'Двойной выстрел',
+      icon: 'http://...',
+      description: 'Двойной выстрел наносит двойной урон',
+    },
+    {
+      id: 9,
+      name: 'Нокаутирующий удар',
+      icon: 'http://...',
+      // <- обратите внимание, описание "засекречено"
+    },
+  ],
 };
 
-export default function orderByProps(obj, param) {
-  const paramArr = [];
-  const otherParamArr = [];
-  for (const value in param) {
-    for (const value2 in obj) {
-      if (param[value] === value2) {
-        paramArr[paramArr.length] = { key: value2, value: obj[value2] };
-        delete obj[value2];
-      }
-    }
-  }
-  for (const value in obj) {
-    otherParamArr[otherParamArr.length] = { key: value, value: obj[value] };
+export default function descriptionObj(obj) {
+  const finalArr = [];
+  for (const value in obj.special) {
+    const {
+      id, name, description = 'Описание недоступно', icon,
+    } = obj.special[value];
+    finalArr.push({
+      id, name, icon, description,
+    });
   }
 
-  otherParamArr.sort((a, b) => a.key.localeCompare(b.key));
-
-  return paramArr.concat(otherParamArr.sort());
+  return finalArr;
 }
